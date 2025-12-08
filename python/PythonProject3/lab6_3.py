@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
+import numpy as np
+
 import datetime
 #import matplotlib.pyplot as plt
 def load_users_data():
@@ -245,7 +247,47 @@ def diagramma3(workouts):
     plt.show()
 
 
-def diagramma4(workouts):
+def diagramma4(users):
+    # Данные
+    categories = []
+    values = []
+    colors = []
+    legend_labels = ['продвинутый', 'средний', 'начальный']
+    legend_colors = ['red', 'orange', 'green']
+    for u in users:
+        categories.append(u['name'])
+        if u['fitness_level'] == 'продвинутый':
+            colors.append('red')
+        elif  u['fitness_level'] == 'средний':
+            colors.append('orange')
+        else:
+            colors.append('green')
+        c = 0
+        uw = u['workouts']
+        for w in uw:
+            c = c + w['calories']
+
+        values.append(c)
+    handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in legend_colors]
+    #handles = [plt.Rectangle((0, 0), 1, 1, color=color_map[l]) for l in unique_levels]
+
+    # Построение столбчатой диаграммы
+    # plt.bar(categories, values) #color=['red', 'green', 'orange', 'yellow'])
+    bars = plt.bar(categories, values, color = colors)
+    plt.legend(handles, legend_labels)
+
+    plt.title("Сравнение пользователей по общим затраченым калориям ")
+    plt.xlabel("Пользователи")
+    plt.ylabel("Общие калории")
+    plt.xticks(rotation=45)
+    # Добавляем значения над столбцами
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, height,  # координаты
+                 str(height),  # текст
+                 ha='center', va='bottom')  # выравнивание
+    plt.show()
+
 
 u = load_users_data()
 w = load_workouts_data()
@@ -258,5 +300,6 @@ analyze_user(find_user(u, 'Борис'), w)
 diagramma1(w)
 diagramma2(u)
 diagramma3(w)
-diagramma4(w)
+diagramma4(u)
+
 

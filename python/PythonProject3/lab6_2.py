@@ -78,7 +78,7 @@ def analyze_user_activity(users):
         n = n + 1
         if n > 3:
             return
-        print(n,'.', u['name'])
+        print(n,'.', u['name'], '('+ u['fitness_level']+')')
         print('Тренировок: ', u['total_trains'])
         print('Калорий: ',  u['total_calories'])
         print('Время: ', round(u['total_time']/60, 1), 'часов')
